@@ -1,4 +1,4 @@
-amel with Quarkus - A Getting Started Guide
+# Camel with Quarkus - A Getting Started Guide
 
 ## Prerequisites
 
