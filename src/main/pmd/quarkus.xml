@@ -1,0 +1,30 @@
+<?xml version="1.0"?>
+
+<ruleset name="Quarkus Rules"
+    xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+
+    <description>
+    </description>
+
+    <rule name="ConversationScopeAnnotationIsNotSupportedByQuarkus"
+          language="java"
+          message="[ERROR] Conversation scope annotation is not supported by Quarkus."
+          class="net.sourceforge.pmd.lang.rule.XPathRule">
+        <description>
+         </description>
+         <priority>5</priority>
+         <properties>
+             <property name="xpath">
+                 <value><![CDATA[
+//MarkerAnnotation/Name[@Image = 'ConversationScoped']
+]]></value>
+             </property>
+         </properties>
+         <example>
+<![CDATA[
+             ]]>
+         </example>
+    </rule>
+</ruleset>
