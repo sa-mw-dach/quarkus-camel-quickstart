@@ -1,0 +1,166 @@
+<?xml version="1.0"?>
+
+<ruleset name="Graal VM Rules"
+    xmlns="http://pmd.sourceforge.net/ruleset/2.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://pmd.sourceforge.net/ruleset/2.0.0 https://pmd.sourceforge.io/ruleset_2_0_0.xsd">
+
+    <description>
+        In order to support native code generation from Java code, GraalVM does not supports all of the Java API. Also, some API are partially supported and needs to be used with care when planning to deploy on GraalVM. This rulesets aims at providing support for developpers building a Java app to be deploy using GraalVM.
+    </description>
+
+    <rule name="ReflectionIsOnlyPartiallySupportedByGraalVM"
+          language="java"
+          message="[WARNING] Class is generally used with Java reflection which is not recommened to use for a GraalVM based app!"
+          class="net.sourceforge.pmd.lang.rule.XPathRule">
+        <description>
+Class is generally used with Java reflection which is not recommened to use for a GraalVM based app!
+         </description>
+         <priority>5</priority>
+         <properties>
+             <property name="xpath">
+                 <value><![CDATA[
+//ClassOrInterfaceType[@Image = 'Class']
+]]></value>
+             </property>
+         </properties>
+         <example>
+<![CDATA[
+public class Hello {
+    public void method() {
+      Class<String> stringClass = String.getClass();
+    }
+ }
+             ]]>
+         </example>
+     </rule>
+
+
+     <rule name="DynamicLoadingIsNotSupportedByGraalVM"
+          language="java"
+         message="[ERROR] DynamicLoading is not supported by GraalVM."
+          class="net.sourceforge.pmd.lang.rule.XPathRule">
+         <description>
+DynamicLoading is not supported by GraalVM.
+         </description>
+         <priority>1</priority>
+         <properties>
+             <property name="xpath">
+                 <value><![CDATA[
+//PrimaryExpression/PrimaryPrefix/Name[ends-with(@Image,'.loadClass')]
+]]></value>
+             </property>
+         </properties>
+         <example/>
+       </rule>
+
+     <rule name="UnsafeMemoryAccessIsNotFullySupportedByGraalVM"
+          language="java"
+         message="[WARNING] Unsafe memory access is mostly supported by GraalVM, but be aware there might some limitation in its usage."
+          class="net.sourceforge.pmd.lang.rule.XPathRule">
+         <description>
+             Unsafe memory access is mostly supported by GraalVM, but be aware there might some limitation in its usage.
+         </description>
+         <priority>1</priority>
+         <properties>
+             <property name="xpath">
+                 <value><![CDATA[
+//ImportDeclaration[@ImportedName = 'sun.misc.Unsafe']
+]]></value>
+             </property>
+         </properties>
+         <example/>
+     </rule>
+
+
+     <rule name="StaticInitializersAreNotFullySupportedByGraalVM"
+          language="java"
+         message="[WARNING] Static initializers are mostly supported by GraalVM, but be aware there might some limitation in their usage."
+          class="net.sourceforge.pmd.lang.rule.XPathRule">
+         <description>
+Static initializers are mostly supported by GraalVM, but be aware there might some limitation in their usage.
+         </description>
+         <priority>1</priority>
+         <properties>
+             <property name="xpath">
+                 <value><![CDATA[
+//Initializer
+]]></value>
+             </property>
+         </properties>
+         <example/>
+     </rule>
+
+     <rule name="JavaNativeInterfaceIsMostlySupportedByGraalVM"
+          language="java"
+         message="[WARNING] Use of JNI is mostly supported by GraalVM, but there is some limitation in its usage."
+          class="net.sourceforge.pmd.lang.rule.XPathRule">
+         <description>
+Use of JNI is mostly supported by GraalVM, but there is some limitation in its usage.
+         </description>
+         <priority>1</priority>
+         <properties>
+             <property name="xpath">
+                 <value><![CDATA[
+//MethodDeclaration[@native = true]
+]]></value>
+             </property>
+         </properties>
+         <example/>
+     </rule>
+
+     <rule name="InvokeDynamicBytecodeAndMethodHandlesByGraalVM"
+          language="java"
+         message="[ERROR] InvokeDynamic Bytecode and Method Handles are not supported by GraalVM."
+          class="net.sourceforge.pmd.lang.rule.XPathRule">
+         <description>
+InvokeDynamic Bytecode and Method Handles are not supported by GraalVM
+         </description>
+         <priority>1</priority>
+         <properties>
+             <property name="xpath">
+                 <value><![CDATA[
+//ImportDeclaration[starts-with(@ImportedName,'java.lang.invoke.Method')]
+]]></value>
+             </property>
+         </properties>
+         <example/>
+     </rule>
+
+     <rule name="FinalizersAreNotSupportedByGraalVM"
+          language="java"
+         message="[ERROR] Finalizers are not supported by GraalVM."
+          class="net.sourceforge.pmd.lang.rule.XPathRule">
+         <description>
+Finalizers are not supported by GraalVM.
+         </description>
+         <priority>1</priority>
+         <properties>
+             <property name="xpath">
+                 <value><![CDATA[
+                     //MethodDeclaration/MethodDeclarator[@Image = 'finalize']
+]]></value>
+             </property>
+         </properties>
+         <example/>
+     </rule>
+
+     <rule name="JavaSecurityManagerIsNoSupportedByGraalVM"
+          language="java"
+         message="[ERROR] The Java Security Manager is not supported by GraalVM."
+          class="net.sourceforge.pmd.lang.rule.XPathRule">
+         <description>
+             The Java Security Manager is not supported by GraalVM.
+         </description>
+         <priority>1</priority>
+         <properties>
+             <property name="xpath">
+                 <value><![CDATA[
+//ImportDeclaration[@ImportedName = 'java.lang.SecurityManager']
+]]></value>
+             </property>
+         </properties>
+         <example/>
+     </rule>
+
+</ruleset>
