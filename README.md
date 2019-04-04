@@ -7,6 +7,8 @@ Setup Maven 3.3.5 and GraalVM, see also https://quarkus.io/guides/getting-starte
 ## Steps
 
 The below outlined steps document how this project has been created and is for learning purposes. If you want to just run the examples, go straight to **Build locally**.
+
+This project also contains some PMD checks for Quarkus to detect possible issues when porting an 
 ### Create quickstart project
 
 mvn io.quarkus:quarkus-maven-plugin:0.12.0:create \
@@ -48,4 +50,13 @@ Modify *src/main/resources/META-INF/microprofile-config.properties*
 
 ### Execute Java binary
 
+    java -jar target/camel-quickstart-1.0-SNAPSHOT-runner.jar
+
 ### Execute Native binary
+
+    ./target/camel-quickstart-1.0-SNAPSHOT-runner
+
+### Run code-check
+
+    mvn pmd:check
+    mvn pmd:pmd site
